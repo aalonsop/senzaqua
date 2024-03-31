@@ -64,3 +64,40 @@ plt.ylabel('Longitude')
 plt.show()
 
 
+
+#%%
+# from moviepy.editor import VideoClip
+# from moviepy.video.io.bindings import mplfig_to_npimage
+
+import matplotlib.animation as animation
+                      
+# %%
+
+# matplot subplot
+fig = plt.figure()
+plt.xlabel('Latitude')
+plt.ylabel('Longitude')
+                      
+# method to get frames                    
+def make_frame(t):
+
+    formatted_date = str(ds_moz['SPEI12mod'].time[t].values)[:10]
+
+    plt.clf()
+    plt.imshow( ds_moz['SPEI12mod'][t,:,:] )
+    plt.colorbar()
+    plt.title( formatted_date )
+
+
+def stop_animation(event):
+    if event.key == 'q':
+        ani.event_source.stop()
+
+
+                      
+ani = animation.FuncAnimation(fig=fig, func=make_frame, frames=range(ds_moz['SPEI12mod'].shape[0]), interval=2)
+fig.canvas.mpl_connect('key_press_event', stop_animation)
+plt.show()
+
+                      
+# %%
